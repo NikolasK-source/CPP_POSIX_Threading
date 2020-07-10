@@ -365,6 +365,9 @@ namespace Threading {
             static unsigned long get_source_version( ) noexcept;
     };
 
+    //! write de::Koesling::Threading::Thread::detachstate_t as string to an output stream
+    std::ostream& operator << (std::ostream& os, de::Koesling::Threading::Thread::detachstate_t ds);
+
     // ------------------- Inline functions for class Thread -------------------
 
     inline void Thread::kill(int signum)
@@ -425,9 +428,6 @@ namespace Threading {
 } /* namespace Threading */
 } /* namespace Koesling */
 } /* namespace de */
-
-//! write de::Koesling::Threading::Thread::detachstate_t as string to an output stream
-std::ostream& operator << (std::ostream& os, de::Koesling::Threading::Thread::detachstate_t ds);
 
 #ifndef __EXCEPTIONS
 static_assert(false, "Exceptions are mandatory.");

@@ -284,10 +284,6 @@ unsigned long Thread::get_source_version( ) noexcept
     return THREAD_VERSION;
 }
 
-} /* namespace Threading */
-} /* namespace Koesling */
-} /* namespace de */
-
 std::ostream& operator <<(std::ostream &os, de::Koesling::Threading::Thread::detachstate_t ds)
 {
     switch(ds)
@@ -304,3 +300,7 @@ std::ostream& operator <<(std::ostream &os, de::Koesling::Threading::Thread::det
     }
     return os;
 }
+
+} /* namespace Threading */
+} /* namespace Koesling */
+} /* namespace de */
