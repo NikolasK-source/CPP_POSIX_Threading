@@ -34,9 +34,7 @@ std::ostream *RW_Lock::error_stream = &std::cerr;
 
 RW_Lock::RW_Lock( ) noexcept :
         rw_lock(PTHREAD_RWLOCK_INITIALIZER), read_locked(0), write_locked(false)
-{
-
-}
+{ }
 
 RW_Lock::~RW_Lock( )
 {
