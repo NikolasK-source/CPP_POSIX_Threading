@@ -110,7 +110,7 @@ namespace Threading {
              *     Stack address       = 0x40196000
              *     Stack size          = 0x201000 bytes
              */
-            Thread(thread_function_t function);
+            explicit Thread(thread_function_t function);
 
             /*! \brief Create a Thread with default attributes except detach
              *  	   state

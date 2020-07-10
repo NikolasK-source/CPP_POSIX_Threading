@@ -47,7 +47,7 @@ class Semaphore
         static std::ostream* error_stream;
 
     public:
-        Semaphore(unsigned int value);
+        explicit Semaphore(unsigned int value);
         virtual ~Semaphore( );
 
         //! Copying not allowed for objects of this type
