@@ -287,3 +287,20 @@ unsigned long Thread::get_source_version( ) noexcept
 } /* namespace Threading */
 } /* namespace Koesling */
 } /* namespace de */
+
+std::ostream& operator <<(std::ostream &os, de::Koesling::Threading::Thread::detachstate_t ds)
+{
+    switch(ds)
+    {
+        case de::Koesling::Threading::Thread::JOINABLE:
+            os << "JOINABLE";
+            break;
+        case de::Koesling::Threading::Thread::DETACHED:
+            os << "DETACHED";
+            break;
+        default:
+            throw std::invalid_argument(
+                    __CURRENT_FUNCTION__ + ": unknown detachstate (" + std::to_string(static_cast<ssize_t>(ds)) + ')');
+    }
+    return os;
+}

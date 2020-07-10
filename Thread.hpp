@@ -419,12 +419,15 @@ namespace Threading {
 
     inline void Thread::set_error_stream(std::ostream& stream) noexcept
     {
-            error_stream = &stream;
+        error_stream = &stream;
     }
 
 } /* namespace Threading */
 } /* namespace Koesling */
 } /* namespace de */
+
+//! write de::Koesling::Threading::Thread::detachstate_t as string to an output stream
+std::ostream& operator << (std::ostream& os, de::Koesling::Threading::Thread::detachstate_t ds);
 
 #ifndef __EXCEPTIONS
 static_assert(false, "Exceptions are mandatory.");
