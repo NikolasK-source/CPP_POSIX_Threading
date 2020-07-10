@@ -35,7 +35,7 @@ std::ostream* Condition::error_stream = &std::cerr;
 // ignore old style cast, because PTHREAD_COND_INITIALIZER uses one
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wold-style-cast"
-Condition::Condition( ) :
+Condition::Condition( ) noexcept :
         mutex( PTHREAD_MUTEX_INITIALIZER),
         condition(PTHREAD_COND_INITIALIZER),
         signal_created(false),

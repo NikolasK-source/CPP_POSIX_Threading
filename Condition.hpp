@@ -65,7 +65,7 @@ namespace Threading {
 
         public:
             //! Create a new Condition object
-            Condition( );
+            Condition( ) noexcept;
 
             //! Destroy a Condition object
             virtual ~Condition( );
