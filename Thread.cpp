@@ -279,11 +279,6 @@ void Thread::send_signal(int signum)
     sysexcept(temp != 0, "pthread_kill", temp);
 }
 
-unsigned long Thread::get_source_version( ) noexcept
-{
-    return THREAD_VERSION;
-}
-
 std::ostream& operator <<(std::ostream &os, de::Koesling::Threading::Thread::detachstate_t ds)
 {
     switch(ds)

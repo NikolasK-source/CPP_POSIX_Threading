@@ -181,11 +181,6 @@ bool Mutex::timedlock(const struct timespec &time)
     return true;
 }
 
-unsigned long Mutex::get_source_version( ) noexcept
-{
-    return MUTEX_VERSION;
-}
-
 } /* namespace Threading */
 } /* namespace Koesling */
 } /* namespace de */

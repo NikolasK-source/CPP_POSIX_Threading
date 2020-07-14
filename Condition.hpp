@@ -19,8 +19,6 @@
 #include <string>
 #include <ostream>
 
-#define CONDITION_VERSION 001000000UL               //!< Library version
-
 namespace de {
 namespace Koesling {
 namespace Threading {
@@ -160,24 +158,7 @@ namespace Threading {
 
             //! Set stream for error output for "non-throwable" errors
             inline static void set_error_stream(std::ostream& stream) noexcept;
-
-            /*! \brief get the version of the header file
-             *
-             * only interesting if used as library.
-             */
-            inline static unsigned long get_header_version( ) noexcept;
-
-            /*! \brief get the version of the source file
-             *
-             * only interesting if used as library.
-             */
-            static unsigned long get_source_version( ) noexcept;
     };
-
-    inline unsigned long Condition::get_header_version( ) noexcept
-    {
-        return CONDITION_VERSION;
-    }
 
     inline void Condition::set_error_stream(std::ostream& stream) noexcept
     {

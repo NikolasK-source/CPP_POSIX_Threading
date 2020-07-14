@@ -18,8 +18,6 @@
 #include <pthread.h>
 #include <ostream>
 
-#define RW_LOCK_VERSION 001000000UL    //!< Library version
-
 namespace de {
 namespace Koesling {
 namespace Threading {
@@ -82,18 +80,6 @@ class RW_Lock final
 
         //! Set stream for error output for "non-throwable" errors
         inline static void set_error_stream(std::ostream &stream) noexcept;
-
-        /*! \brief get the version of the header file
-         *
-         * only interesting if used as library.
-         */
-        inline static unsigned long getHeaderVersion( ) noexcept;
-
-        /*! \brief get the version of the source file
-         *
-         * only interesting if used as library.
-         */
-        static unsigned long getSourceVersion( ) noexcept;
 };
 
 inline bool RW_Lock::is_locked( ) noexcept
@@ -109,11 +95,6 @@ inline size_t RW_Lock::is_read_locked( ) noexcept
 inline bool RW_Lock::is_write_locked( ) noexcept
 {
     return write_locked;
-}
-
-inline unsigned long RW_Lock::getHeaderVersion( ) noexcept
-{
-    return RW_LOCK_VERSION;
 }
 
 inline void RW_Lock::set_error_stream(std::ostream &stream) noexcept

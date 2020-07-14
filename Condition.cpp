@@ -200,11 +200,6 @@ bool Condition::broadcast( )
     return ret_val;
 }
 
-unsigned long Condition::get_source_version( ) noexcept
-{
-    return CONDITION_VERSION;
-}
-
 } /* namespace Threading */
 } /* namespace Koesling */
 } /* namespace de */

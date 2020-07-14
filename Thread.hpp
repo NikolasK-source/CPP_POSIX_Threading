@@ -18,8 +18,6 @@
 #include <pthread.h>
 #include <ostream>
 
-#define THREAD_VERSION 001000000UL  //!< Library version
-
 namespace de {
 namespace Koesling {
 namespace Threading {
@@ -351,18 +349,6 @@ namespace Threading {
 
             //! Set stream for error output for "non-throwable" errors
             inline static void set_error_stream(std::ostream& stream) noexcept;
-
-            /*! \brief get the version of the header file
-             *
-             * only interesting if used as library.
-             */
-            inline static unsigned long get_header_version( ) noexcept;
-
-            /*! \brief get the version of the source file
-             *
-             * only interesting if used as library.
-             */
-            static unsigned long get_source_version( ) noexcept;
     };
 
     //! write de::Koesling::Threading::Thread::detachstate_t as string to an output stream
@@ -413,11 +399,6 @@ namespace Threading {
     inline pthread_t Thread::get_my_id( ) noexcept
     {
         return pthread_self( );
-    }
-
-    inline unsigned long Thread::get_header_version( ) noexcept
-    {
-        return THREAD_VERSION;
     }
 
     inline void Thread::set_error_stream(std::ostream& stream) noexcept

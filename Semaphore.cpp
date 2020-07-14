@@ -156,11 +156,6 @@ void Semaphore::post( )
     locking_threads[thread] = false;
 }
 
-unsigned long Semaphore::get_source_version( ) noexcept
-{
-    return SEMAPHORE_VERSION;
-}
-
 } /* namespace Threading */
 } /* namespace Koesling */
 } /* namespace de */
