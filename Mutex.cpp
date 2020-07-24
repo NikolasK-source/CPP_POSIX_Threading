@@ -188,6 +188,9 @@ bool Mutex::trylock( )
 
 bool Mutex::timedlock(const struct timespec &time)
 {
+    // Double lock in one thread --> programming error
+    if (locked && (lock_thread == pthread_self( ))) throw std::logic_error(DOUBLE_LOCK);
+
     const struct timespec timeout_time = pthread_timeout(time);
 
     // try to lock the mutex ( + error handling )
