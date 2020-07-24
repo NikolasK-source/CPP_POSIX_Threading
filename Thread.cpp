@@ -13,7 +13,16 @@
  *
  */
 
+// -------------------- non standard library includes ------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 #include "Thread.hpp"
+
+#include "common_header/sysexcept.hpp"
+#include "common_header/destructor_exception.hpp"
+
+
+// -------------------- standard library includes ----------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 #include <system_error>
 #include <csignal>
 #include <cerrno>
@@ -21,17 +30,10 @@
 #include <iostream>
 #include <sysexits.h>
 
-#include "common_header/sysexcept.hpp"
-#include "common_header/destructor_exception.hpp"
 
-namespace de {
-namespace Koesling {
-namespace Threading {
+// -------------------- error messages ------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 
-std::ostream* Thread::error_stream = &std::cerr;
-
-// ----------------------- error messages --------------------------------------
-// =============================================================================
 //! error message: invalid detachstate
 #define INVALID_DETACHSTATE __CURRENT_FUNCTION__ + ": detachstate is invalid."
 
@@ -58,6 +60,19 @@ std::ostream* Thread::error_stream = &std::cerr;
 
 //! error message: signal rise, but thread is not running
 #define SIGNAL_STOPPED __CURRENT_FUNCTION__ + ": Call of Thread::signal(), but thread is not running."
+
+
+namespace de {
+namespace Koesling {
+namespace Threading {
+
+// -------------------- Initialize static attributes -------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
+std::ostream* Thread::error_stream = &std::cerr;
+
+
+// -------------------- Constructor(s) ---------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 
 Thread::Thread(thread_function_t function) :
         thread_id(0), funcion(function), running(false), detachstate(JOINABLE), arguments(nullptr)
@@ -91,6 +106,19 @@ Thread::Thread(thread_function_t function, const pthread_attr_t &attributes) :
     // store detachstate
     detachstate = temp_detachstate == PTHREAD_CREATE_JOINABLE ? JOINABLE : DETACHED;
 }
+
+Thread::Thread(Thread &&other) noexcept :
+        thread_id(std::move(other.thread_id)),
+        funcion(std::move(other.funcion)),
+        running(std::move(other.running)),
+        detachstate(std::move(other.detachstate)),
+        attributes(std::move(other.attributes)),
+        arguments(std::move(other.arguments))
+{ }
+
+
+// -------------------- Destructor -------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 
 Thread::~Thread( )
 {
@@ -126,15 +154,9 @@ Thread::~Thread( )
     }
 }
 
-Thread::Thread(Thread &&other) noexcept :
-        thread_id(std::move(other.thread_id)),
-        funcion(std::move(other.funcion)),
-        running(std::move(other.running)),
-        detachstate(std::move(other.detachstate)),
-        attributes(std::move(other.attributes)),
-        arguments(std::move(other.arguments))
-{
-}
+
+// -------------------- Methods ----------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 
 Thread& Thread::operator =(Thread &&other) noexcept
 {

@@ -13,24 +13,36 @@
  *
  */
 
+// -------------------- non standard library includes ------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 #include "Condition.hpp"
 
+#include "pthread_timeout.hpp"
+#include "common_header/sysexcept.hpp"
+#include "common_header/destructor_exception.hpp"
+
+
+// -------------------- standard library includes ----------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 #include <stdexcept>
 #include <cerrno>
 #include <sys/time.h>
 #include <iostream>
 #include <sysexits.h>
 
-#include "common_header/sysexcept.hpp"
-#include "common_header/destructor_exception.hpp"
-
-#include "pthread_timeout.hpp"
 
 namespace de {
 namespace Koesling {
 namespace Threading {
 
+// -------------------- Initialize static attributes -------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
+
 std::ostream* Condition::error_stream = &std::cerr;
+
+
+// -------------------- Constructor(s) ---------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 
 // ignore old style cast, because PTHREAD_COND_INITIALIZER uses one
 #pragma GCC diagnostic push
@@ -44,6 +56,18 @@ Condition::Condition( ) noexcept :
 { }
 // re-enable warnings
 #pragma GCC diagnostic pop
+
+Condition::Condition(Condition &&other) noexcept :
+        mutex(std::move(other.mutex)),
+        condition(std::move(other.condition)),
+        signal_created(std::move(other.signal_created)),
+        waiting_thread_count(std::move(other.waiting_thread_count)),
+        wakeup_by_brodcast(std::move(other.wakeup_by_brodcast))
+{ }
+
+
+// -------------------- Destructor -------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 
 Condition::~Condition( )
 {
@@ -62,13 +86,9 @@ Condition::~Condition( )
     }
 }
 
-Condition::Condition(Condition &&other) noexcept :
-        mutex(std::move(other.mutex)),
-        condition(std::move(other.condition)),
-        signal_created(std::move(other.signal_created)),
-        waiting_thread_count(std::move(other.waiting_thread_count)),
-        wakeup_by_brodcast(std::move(other.wakeup_by_brodcast))
-{ }
+
+// -------------------- Methods ----------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 
 Condition& Condition::operator =(Condition &&other)
 noexcept

@@ -13,17 +13,26 @@
  *
  */
 
+// -------------------- non standard library includes ------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 #include "Mutex.hpp"
+
+#include "pthread_timeout.hpp"
+#include "common_header/sysexcept.hpp"
+#include "common_header/destructor_exception.hpp"
+
+
+// -------------------- standard library includes ----------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 #include <stdexcept>
 #include <cerrno>
 #include <sys/time.h>
 #include <iostream>
 #include <sysexits.h>
 
-#include "common_header/sysexcept.hpp"
-#include "common_header/destructor_exception.hpp"
 
-#include "pthread_timeout.hpp"
+// -------------------- Macros -----------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 
 //! error message: unlock a not locked mutex
 #define MUTEX_NOT_LOCKED __CURRENT_FUNCTION__ + ": Call of Mutex::unlock(), but Mutex was never locked"
@@ -35,17 +44,34 @@
 //! error message: double lock in one thread
 #define DOUBLE_LOCK __CURRENT_FUNCTION__ + ": A mutex must not be locked twice in the same thread."
 
+
 namespace de {
 namespace Koesling {
 namespace Threading {
 
+// -------------------- Initialize static attributes -------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
+
 std::ostream* Mutex::error_stream = &std::cerr;
+
+// -------------------- Constructor(s) ---------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 
 Mutex::Mutex( ) noexcept :
         mutex( PTHREAD_MUTEX_INITIALIZER),
         lock_thread(0),
         locked(false)
 { }
+
+Mutex::Mutex(Mutex &&other) noexcept :
+        mutex(std::move(other.mutex)),
+        lock_thread(std::move(other.lock_thread)),
+        locked(std::move(other.locked))
+{ }
+
+
+// -------------------- Destructor -------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 
 Mutex::~Mutex( )
 {
@@ -80,11 +106,9 @@ Mutex::~Mutex( )
     }
 }
 
-Mutex::Mutex(Mutex &&other) noexcept :
-        mutex(std::move(other.mutex)),
-        lock_thread(std::move(other.lock_thread)),
-        locked(std::move(other.locked))
-{ }
+
+// -------------------- Methods ----------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 
 Mutex& Mutex::operator =(Mutex &&other) noexcept
 {
