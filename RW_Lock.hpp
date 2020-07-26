@@ -24,6 +24,9 @@ namespace Threading {
 
 /*! \brief RW_Lock based on pthread_rw_lock
  *
+ * Similar to Mutex:
+ *      unlimited number of simultaneous readers
+ *      maximum one simultaneous writer
  */
 class RW_Lock final
 {
@@ -57,13 +60,25 @@ class RW_Lock final
         //! Move object
         RW_Lock& operator=(RW_Lock &&other) noexcept;
 
+        //! read lock
         void rd_lock( );
+
+        //! write lock
         void wr_lock( );
+
+        //! try read lock
         bool rd_trylock( );
+
+        //! try write lock
         bool wr_trylock( );
+
+        //! timed read lock
         bool rd_timedlock(const struct timespec &time);
+
+        //! timed write lock
         bool wr_timedlock(const struct timespec &time);
 
+        //! unlock the rw lock
         void unlock( );
 
         //! Check if the RW_Lock is currently locked
