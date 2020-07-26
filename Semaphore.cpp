@@ -27,12 +27,18 @@
 #include <cerrno>
 #include <stdexcept>
 #include <sysexits.h>
-
+#include <iostream>
 
 
 namespace de {
 namespace Koesling {
 namespace Threading {
+
+// -------------------- Initialize static attributes -------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
+
+std::ostream* Semaphore::error_stream = &std::cerr;
+
 
 // -------------------- Constructor(s) ---------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------
@@ -171,7 +177,7 @@ void Semaphore::post( )
 
     sysexcept(sem_post(&sem), "sem_post", errno);
 
-    current_value++;
+    current_value--;
     locking_threads[thread] = false;
 }
 
