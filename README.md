@@ -66,3 +66,13 @@ If no timeout is specified, the method can not return without a condition being 
 The condition can be signaled by two methods: signal() and broadcast().
 signal() is restarting exactly one of the threads waiting for the condition and broadcast() is restarting all.
 Both methods return false if no thread was waiting for the condition, otherwise they return true.
+
+### RW_Lock
+Like Mutex, but implements a RW_Lock based on pthread_rwlock.
+
+The RW_Lock is locked by calling one of the following methods:
+1. void [rd|wr]_lock()
+2. bool [rd|wr]_trylock()
+3. bool [rd|wr]_timedlock(timespec&)
+
+The Mehtod unlock() unlocks the RW_Lock.
