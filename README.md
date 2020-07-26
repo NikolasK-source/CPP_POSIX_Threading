@@ -76,3 +76,7 @@ The RW_Lock is locked by calling one of the following methods:
 3. bool [rd|wr]_timedlock(timespec&)
 
 The Mehtod unlock() unlocks the RW_Lock.
+
+### Semaphore 
+
+This class implements a Semaphore based on pthread sem.
