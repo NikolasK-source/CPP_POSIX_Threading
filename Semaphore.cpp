@@ -17,9 +17,8 @@
 #include "Semaphore.hpp"
 
 #include "pthread_timeout.hpp"
-#include "common_header/defines.hpp"
-#include "common_header/sysexcept.hpp"
-#include "common_header/destructor_exception.hpp"
+#include "sysexcept.hpp"
+#include "destructor_exception.hpp"
 
 
 // -------------------- standard library includes ----------------------------------------------------------------------
@@ -47,7 +46,7 @@ Semaphore::Semaphore(unsigned int value) :
         max_value(value),
         thread_queue(0)
 {
-    if(!value) throw std::invalid_argument(__CURRENT_FUNCTION__ +
+    if(!value) throw std::invalid_argument(std::string(__PRETTY_FUNCTION__) +
             ": initializing a semaphore with maximum value of 0 is pointless.");
 
     sysexcept(sem_init(&sem, 0, value), "sem_init", errno);
@@ -100,7 +99,8 @@ void Semaphore::wait( )
     auto thread = pthread_self();
 
     if(locking_threads[thread])
-        throw std::logic_error(__CURRENT_FUNCTION__ + ": Double wait within one thread is not allowed.");
+        throw std::logic_error(std::string(__PRETTY_FUNCTION__) + 
+                ": Double wait within one thread is not allowed.");
 
     thread_queue++;
 
@@ -116,7 +116,8 @@ bool Semaphore::trywait( )
     auto thread = pthread_self();
 
     if(locking_threads[thread])
-        throw std::logic_error(__CURRENT_FUNCTION__ + ": Double wait within one thread is not allowed.");
+        throw std::logic_error(std::string(__PRETTY_FUNCTION__) + 
+                ": Double wait within one thread is not allowed.");
 
     thread_queue++;
 
@@ -143,7 +144,8 @@ bool Semaphore::timedwait(const timespec &time)
     auto thread = pthread_self();
 
     if(locking_threads[thread])
-        throw std::logic_error(__CURRENT_FUNCTION__ + ": Double wait within one thread is not allowed.");
+        throw std::logic_error(std::string(__PRETTY_FUNCTION__) + 
+                ": Double wait within one thread is not allowed.");
 
     auto timeout = pthread_timeout(time);
 
@@ -172,7 +174,7 @@ void Semaphore::post( )
     auto thread = pthread_self();
 
     if(!locking_threads[thread])
-        throw std::logic_error(__CURRENT_FUNCTION__ +
+        throw std::logic_error(std::string(__PRETTY_FUNCTION__) +
                 ": Releasing a semaphore which the thread does not hold is not allowed.");
 
     sysexcept(sem_post(&sem), "sem_post", errno);

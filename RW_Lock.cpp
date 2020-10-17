@@ -17,8 +17,8 @@
 // ---------------------------------------------------------------------------------------------------------------------
 #include "RW_Lock.hpp"
 
-#include "common_header/sysexcept.hpp"
-#include "common_header/destructor_exception.hpp"
+#include "sysexcept.hpp"
+#include "destructor_exception.hpp"
 #include "pthread_timeout.hpp"
 
 // -------------------- standard library includes ----------------------------------------------------------------------
@@ -174,8 +174,9 @@ bool RW_Lock::wr_timedlock(const struct timespec &time)
 
 void RW_Lock::unlock( )
 {
-    if (not is_locked( )) throw std::logic_error(
-            __CURRENT_FUNCTION__ + ": Call of RW_Lock::unlock(), but RW_Lock was never locked.");
+    if (not is_locked( )) 
+        throw std::logic_error(std::string(__PRETTY_FUNCTION__) + 
+                ": Call of RW_Lock::unlock(), but RW_Lock was never locked.");
 
     bool write_locked_temp = write_locked;
 

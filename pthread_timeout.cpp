@@ -13,9 +13,11 @@
  */
 
 #include "pthread_timeout.hpp"
-#include "common_header/defines.hpp"
-#include "common_header/sysexcept.hpp"
+#include "sysexcept.hpp"
 #include <stdexcept>
+
+#define NSEC_PER_SEC 1000000000
+#define NSEC_PER_USEC 1000
 
 namespace de {
 namespace Koesling {
@@ -25,7 +27,7 @@ timespec pthread_timeout(const timespec& ts)
 {
     // verify time
     if (ts.tv_sec < 0 || ts.tv_nsec < 0 || ts.tv_nsec >= NSEC_PER_SEC)
-        throw std::invalid_argument(__CURRENT_FUNCTION__ + ": invalid timespec");
+        throw std::invalid_argument(std::string(__PRETTY_FUNCTION__) + ": invalid timespec");
 
     // create time for timeout
     struct timeval current_time;

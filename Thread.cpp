@@ -17,8 +17,8 @@
 // ---------------------------------------------------------------------------------------------------------------------
 #include "Thread.hpp"
 
-#include "common_header/sysexcept.hpp"
-#include "common_header/destructor_exception.hpp"
+#include "sysexcept.hpp"
+#include "destructor_exception.hpp"
 
 
 // -------------------- standard library includes ----------------------------------------------------------------------
@@ -31,35 +31,41 @@
 #include <sysexits.h>
 
 
-// -------------------- error messages ------------------------------------------------------------------
+// -------------------- error messages ---------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------
 
 //! error message: invalid detachstate
-#define INVALID_DETACHSTATE __CURRENT_FUNCTION__ + ": detachstate is invalid."
+#define INVALID_DETACHSTATE std::string(__PRETTY_FUNCTION__) + ": detachstate is invalid."
 
 //! error message: double thread start
-#define ALREADY_STARTED __CURRENT_FUNCTION__ + ": Call of Thread::start(), but thread was started "\
+#define ALREADY_STARTED std::string(__PRETTY_FUNCTION__) + ": Call of Thread::start(), but thread was started "\
     "already."
 
 //! error message: detach not joinable thread
-#define DETACH_DETACHED __CURRENT_FUNCTION__ + ": Call of Thread::detach(), but thread is not joinable "\
+#define DETACH_DETACHED std::string(__PRETTY_FUNCTION__) + ": Call of Thread::detach(), but thread is not joinable "\
     "or already detached."
 
 //! error message: detach not running thread
-#define DETACH_STOPPED __CURRENT_FUNCTION__ + ": Call of Thread::detach(), but thread is not running."
+#define DETACH_STOPPED std::string(__PRETTY_FUNCTION__) + ": Call of Thread::detach(), but thread is not running."
 
 //! error message: join a detached thread
-#define JOIN_DETACHED __CURRENT_FUNCTION__ + ": Call of Thread::join(), but thread is detached."
+#define JOIN_DETACHED std::string(__PRETTY_FUNCTION__) + ": Call of Thread::join(), but thread is detached."
 
 //! error message: join a thread that was not started
-#define JOIN_NOT_STARTED __CURRENT_FUNCTION__ + ": Call of Thread::join(), nut thread is not started "\
+#define JOIN_NOT_STARTED std::string(__PRETTY_FUNCTION__) + ": Call of Thread::join(), nut thread is not started "\
     "or was killed"
 
 //! error message: cancel a thread that was not started
-#define CANCEL_STOPPED __CURRENT_FUNCTION__ + ": Call of Thread::kill(), but thread is not running."
+#define CANCEL_STOPPED std::string(__PRETTY_FUNCTION__) + ": Call of Thread::kill(), but thread is not running."
 
 //! error message: signal rise, but thread is not running
-#define SIGNAL_STOPPED __CURRENT_FUNCTION__ + ": Call of Thread::signal(), but thread is not running."
+#define SIGNAL_STOPPED std::string(__PRETTY_FUNCTION__) + ": Call of Thread::signal(), but thread is not running."
+
+
+// -------------------- General constants and definitions --------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
+#define NSEC_PER_SEC 1000000000
+#define NSEC_PER_USEC 1000
 
 
 namespace de {
@@ -313,7 +319,7 @@ std::ostream& operator <<(std::ostream &os, de::Koesling::Threading::Thread::det
             break;
         default:
             throw std::invalid_argument(
-                    __CURRENT_FUNCTION__ + ": unknown detachstate (" + std::to_string(static_cast<ssize_t>(ds)) + ')');
+                    std::string(__PRETTY_FUNCTION__) + ": unknown detachstate (" + std::to_string(static_cast<ssize_t>(ds)) + ')');
     }
     return os;
 }

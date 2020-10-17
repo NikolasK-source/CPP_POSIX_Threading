@@ -18,8 +18,8 @@
 #include "Condition.hpp"
 
 #include "pthread_timeout.hpp"
-#include "common_header/sysexcept.hpp"
-#include "common_header/destructor_exception.hpp"
+#include "sysexcept.hpp"
+#include "destructor_exception.hpp"
 
 
 // -------------------- standard library includes ----------------------------------------------------------------------

@@ -18,8 +18,8 @@
 #include "Mutex.hpp"
 
 #include "pthread_timeout.hpp"
-#include "common_header/sysexcept.hpp"
-#include "common_header/destructor_exception.hpp"
+#include "sysexcept.hpp"
+#include "destructor_exception.hpp"
 
 
 // -------------------- standard library includes ----------------------------------------------------------------------
@@ -35,14 +35,14 @@
 // ---------------------------------------------------------------------------------------------------------------------
 
 //! error message: unlock a not locked mutex
-#define MUTEX_NOT_LOCKED __CURRENT_FUNCTION__ + ": Call of Mutex::unlock(), but Mutex was never locked"
+#define MUTEX_NOT_LOCKED std::string(__PRETTY_FUNCTION__) + ": Call of Mutex::unlock(), but Mutex was never locked"
 
 //! error message: unlock a mutex from an other thread
-#define LOCKING_THREAD_MISSMATCH __CURRENT_FUNCTION__ + ": Calling pthread_mutex_unlock() with a mutex "               \
+#define LOCKING_THREAD_MISSMATCH std::string(__PRETTY_FUNCTION__) + ": Calling pthread_mutex_unlock() with a mutex "   \
     "that the calling thread does not hold will result in undefined behavior."
 
 //! error message: double lock in one thread
-#define DOUBLE_LOCK __CURRENT_FUNCTION__ + ": A mutex must not be locked twice in the same thread."
+#define DOUBLE_LOCK std::string(__PRETTY_FUNCTION__) + ": A mutex must not be locked twice in the same thread."
 
 
 namespace de {
